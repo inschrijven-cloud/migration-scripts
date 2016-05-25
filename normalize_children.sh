@@ -22,6 +22,7 @@ var normalizeChild = (child) => {
 
   toReturn.firstName = child.first_name;
   toReturn.lastName = child.last_name;
+  toReturn.attendances = [];
 
   if(child.mobile_phone) {
     toReturn.contact = {};
@@ -47,6 +48,10 @@ var normalizeChild = (child) => {
       toReturn.address.city = child.city.split(' ').slice(1).join(' ');
     } else toReturn.address.city = child.city;
     
+  }
+
+  if(child.attendances) {
+    toReturn.attendances = child.attendances;
   }
 
   if(child.birth_date) toReturn.birthDate = child.birth_date;
