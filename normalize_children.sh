@@ -54,7 +54,10 @@ var normalizeChild = (child) => {
     toReturn.attendances = child.attendances;
   }
 
-  if(child.birth_date) toReturn.birthDate = child.birth_date;
+  if(child.birth_date) {
+    const splitDate = child.birth_date.split("-");
+    toReturn.birthDate = { year: Number(splitDate[0]), month: Number(splitDate[1]), day: Number(splitDate[2]) };
+  }
 
   return toReturn;
 };

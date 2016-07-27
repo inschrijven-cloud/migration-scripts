@@ -21,7 +21,9 @@ var normalizeShift = (shift) => {
   toReturn.type = 'type/shift/v1'
 
   toReturn._id = shift.date + '/' + shift.shift_type_mnemonic;
-  toReturn.date = shift.date;
+
+  const splitDate = shift.date.split("-");
+  toReturn.date = { day: Number(splitDate[2]), month: Number(splitDate[1]), year: Number(splitDate[0]) };
   toReturn.place = shift.place;
   toReturn.shiftType = {
     mnemonic: shift.shift_type_mnemonic,
