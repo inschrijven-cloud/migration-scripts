@@ -17,46 +17,47 @@ process.stdin.on('end', () => {
 
 var normalizeChild = (child) => {
   var toReturn = {};
+  toReturn.doc = {};
 
-  toReturn.type = 'type/child/v1'
+  toReturn.kind = 'type/child/v1'
 
-  toReturn.firstName = child.first_name;
-  toReturn.lastName = child.last_name;
-  toReturn.attendances = [];
+  toReturn.doc.firstName = child.first_name;
+  toReturn.doc.lastName = child.last_name;
+  toReturn.doc.attendances = [];
 
   if(child.mobile_phone) {
-    toReturn.contact = {};
-    toReturn.contact.phone = [];
-    toReturn.contact.phone.push({ kind: 'mobile', phoneNumber: child.mobile_phone });
+    toReturn.doc.contact = {};
+    toReturn.doc.contact.phone = [];
+    toReturn.doc.contact.phone.push({ kind: 'mobile', phoneNumber: child.mobile_phone });
   }
 
   if(child.landline) {
-    toReturn.contact = toReturn.contact || {};
-    toReturn.contact.phone = toReturn.contact.phone || [];
-    toReturn.contact.phone.push({ kind: 'landline', phoneNumber: child.landline });
+    toReturn.doc.contact = toReturn.doc.contact || {};
+    toReturn.doc.contact.phone = toReturn.doc.contact.phone || [];
+    toReturn.doc.contact.phone.push({ kind: 'landline', phoneNumber: child.landline });
   }
 
   if(child.street && child.city) {
-    toReturn.address = {};
+    toReturn.doc.address = {};
     if(!isNaN(Number(child.street.split(' ').slice(-1)))) {
-      toReturn.address.number = Number(child.street.split(' ').slice(-1));
-      toReturn.address.street = child.street.split(' ').slice(0, -1).join(' ');
+      toReturn.doc.address.number = Number(child.street.split(' ').slice(-1));
+      toReturn.doc.address.street = child.street.split(' ').slice(0, -1).join(' ');
     }
 
     if(!isNaN(Number(child.city.split(' ')[0]))) {
-      toReturn.address.zipCode = Number(child.city.split(' ')[0]);
-      toReturn.address.city = child.city.split(' ').slice(1).join(' ');
-    } else toReturn.address.city = child.city;
+      toReturn.doc.address.zipCode = Number(child.city.split(' ')[0]);
+      toReturn.doc.address.city = child.city.split(' ').slice(1).join(' ');
+    } else toReturn.doc.address.city = child.city;
     
   }
 
   if(child.attendances) {
-    toReturn.attendances = child.attendances;
+    toReturn.doc.attendances = child.attendances;
   }
 
   if(child.birth_date) {
     const splitDate = child.birth_date.split("-");
-    toReturn.birthDate = { year: Number(splitDate[0]), month: Number(splitDate[1]), day: Number(splitDate[2]) };
+    toReturn.doc.birthDate = { year: Number(splitDate[0]), month: Number(splitDate[1]), day: Number(splitDate[2]) };
   }
 
   return toReturn;

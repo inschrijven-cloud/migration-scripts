@@ -17,15 +17,16 @@ process.stdin.on('end', () => {
 
 var normalizeShift = (shift) => {
   var toReturn = {};
+  toReturn.doc = {};
 
-  toReturn.type = 'type/shift/v1'
+  toReturn.kind = 'type/shift/v1'
 
   toReturn._id = shift.date + '/' + shift.shift_type_mnemonic;
 
   const splitDate = shift.date.split("-");
-  toReturn.date = { day: Number(splitDate[2]), month: Number(splitDate[1]), year: Number(splitDate[0]) };
-  toReturn.place = shift.place;
-  toReturn.shiftType = {
+  toReturn.doc.date = { day: Number(splitDate[2]), month: Number(splitDate[1]), year: Number(splitDate[0]) };
+  toReturn.doc.place = shift.place;
+  toReturn.doc.shiftType = {
     mnemonic: shift.shift_type_mnemonic,
     description: shift.shift_type_description
   };
