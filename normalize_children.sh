@@ -40,7 +40,7 @@ var normalizeChild = (child) => {
   if(child.street && child.city) {
     toReturn.doc.address = {};
     if(!isNaN(Number(child.street.split(' ').slice(-1)))) {
-      toReturn.doc.address.number = Number(child.street.split(' ').slice(-1));
+      toReturn.doc.address.number = Number(child.street.split(' ').slice(-1)).toString();
       toReturn.doc.address.street = child.street.split(' ').slice(0, -1).join(' ');
     }
 

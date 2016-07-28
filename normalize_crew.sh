@@ -42,7 +42,7 @@ var normalizeCrew = (crew) => {
   if(crew.street && crew.city) {
     toReturn.doc.address = {};
     if(!isNaN(Number(crew.street.split(' ').slice(-1)))) {
-      toReturn.doc.address.number = Number(crew.street.split(' ').slice(-1));
+      toReturn.doc.address.number = Number(crew.street.split(' ').slice(-1)).toString();
       toReturn.doc.address.street = crew.street.split(' ').slice(0, -1).join(' ');
     }
 
