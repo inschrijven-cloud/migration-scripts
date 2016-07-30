@@ -25,13 +25,14 @@ var normalizeCrew = (crew) => {
   toReturn.doc.lastName = crew.last_name;
   toReturn.doc.contact = {};
 
+  toReturn.doc.contact.phone = [];
+  toReturn.doc.contact.email = [];
+
   if(crew.mobile_phone) {
-    toReturn.doc.contact.phone = [];
     toReturn.doc.contact.phone.push({ kind: 'mobile', phoneNumber: crew.mobile_phone });
   }
 
   if(crew.landline) {
-    toReturn.doc.contact.phone = toReturn.doc.contact.phone || [];
     toReturn.doc.contact.phone.push({ kind: 'landline', phoneNumber: crew.landline });
   }
 
@@ -39,8 +40,9 @@ var normalizeCrew = (crew) => {
     toReturn.doc.contact.email = [crew.email];
   }
 
+  toReturn.doc.address = {};
+
   if(crew.street && crew.city) {
-    toReturn.doc.address = {};
     if(!isNaN(Number(crew.street.split(' ').slice(-1)))) {
       toReturn.doc.address.number = Number(crew.street.split(' ').slice(-1)).toString();
       toReturn.doc.address.street = crew.street.split(' ').slice(0, -1).join(' ');
