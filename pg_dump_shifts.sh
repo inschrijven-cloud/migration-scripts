@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DB_NAME=speelsysteem_backup_2016_paas
+. ./export_db_name.sh
 
 QUERY="
 SELECT array_to_json(array_agg(row_to_json(t))) FROM (
