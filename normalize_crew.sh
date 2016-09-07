@@ -20,6 +20,7 @@ var normalizeCrew = (crew) => {
   toReturn.doc = {};
 
   toReturn.kind = 'type/crew/v1'
+  toReturn._id = crew.id;
 
   toReturn.doc.firstName = crew.first_name;
   toReturn.doc.lastName = crew.last_name;
@@ -43,21 +44,16 @@ var normalizeCrew = (crew) => {
   toReturn.doc.address = {};
 
   if(crew.street && crew.city) {
-    if(!isNaN(Number(crew.street.split(' ').slice(-1)))) {
-      toReturn.doc.address.number = Number(crew.street.split(' ').slice(-1)).toString();
-      toReturn.doc.address.street = crew.street.split(' ').slice(0, -1).join(' ');
-    }
+    toReturn.doc.address.number = crew.street_number;
+    toReturn.doc.address.street = crew.street;
 
-    if(!isNaN(Number(crew.city.split(' ')[0]))) {
-      toReturn.doc.address.zipCode = Number(crew.city.split(' ')[0]);
-      toReturn.doc.address.city = crew.city.split(' ').slice(1).join(' ');
-    } else toReturn.doc.address.city = crew.city;
-    
+    toReturn.doc.address.zipCode = Number(crew.zip_code);
+    toReturn.doc.address.city = crew.city;
   }
 
-  if(crew.birth_date) {
-    const splitDate = crew.date.split("-");
-    toReturn.date = { day: Number(splitDate[2]), month: Number(splitDate[1]), year: Number(splitDate[0]) };
+  if(crew.birthdate) {
+    const splitDate = crew.birthdate.split("-");
+    toReturn.doc.birthDate = { day: Number(splitDate[2]), month: Number(splitDate[1]), year: Number(splitDate[0]) };
   }
 
   if(crew.bank_account) toReturn.doc.bankAccount = crew.bank_account;

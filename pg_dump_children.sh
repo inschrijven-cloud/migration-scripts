@@ -6,7 +6,7 @@ QUERY="
 SELECT array_to_json(array_agg(row_to_json(t)))
 FROM (
   SELECT child.*, (
-    SELECT array_to_json(array_agg(to_char(shift.date, 'YYYY-MM-DD') || '/'  || shift_type.mnemonic)) AS attendances
+    SELECT array_to_json(array_agg(to_char(shift.date, 'YYYY-MM-DD') || '/'  || shift.id)) AS attendances
     FROM child_to_shift JOIN shift ON shift.id = child_to_shift.shift_id JOIN shift_type ON shift.shift_type = shift_type.id
     WHERE child_id = child.id
   )

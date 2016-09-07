@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const _ = require('underscore');
+
 var input = '';
 
 process.stdin.on('readable', () => {
@@ -19,40 +21,35 @@ var normalizeChild = (child) => {
   var toReturn = {};
   toReturn.doc = {};
 
-  toReturn.kind = 'type/child/v1'
+  toReturn.kind = 'type/child/v1';
+  toReturn._id = child.id;
 
   toReturn.doc.firstName = child.first_name;
   toReturn.doc.lastName = child.last_name;
   toReturn.doc.attendances = [];
 
+  toReturn.doc.contact = {};
+  toReturn.doc.contact.phone = [];
+
+  toReturn.doc.contact.email = [];
+
   if(child.mobile_phone) {
-    toReturn.doc.contact = {};
-    toReturn.doc.contact.phone = [];
     toReturn.doc.contact.phone.push({ kind: 'mobile', phoneNumber: child.mobile_phone });
   }
 
   if(child.landline) {
-    toReturn.doc.contact = toReturn.doc.contact || {};
-    toReturn.doc.contact.phone = toReturn.doc.contact.phone || [];
     toReturn.doc.contact.phone.push({ kind: 'landline', phoneNumber: child.landline });
   }
 
-  if(child.street && child.city) {
-    toReturn.doc.address = {};
-    if(!isNaN(Number(child.street.split(' ').slice(-1)))) {
-      toReturn.doc.address.number = Number(child.street.split(' ').slice(-1)).toString();
-      toReturn.doc.address.street = child.street.split(' ').slice(0, -1).join(' ');
-    }
+  toReturn.doc.address = {};
 
-    if(!isNaN(Number(child.city.split(' ')[0]))) {
-      toReturn.doc.address.zipCode = Number(child.city.split(' ')[0]);
-      toReturn.doc.address.city = child.city.split(' ').slice(1).join(' ');
-    } else toReturn.doc.address.city = child.city;
-    
-  }
-
+  if(child.street) toReturn.doc.address.street = child.street;
+  if(child.street_number) toReturn.doc.address.number = child.street_number;
+  if(child.zip_code) toReturn.doc.address.zipCode = Number(child.zip_code);
+  if(child.city) toReturn.doc.address.city = child.city;
+ 
   if(child.attendances) {
-    toReturn.doc.attendances = child.attendances;
+    toReturn.doc.attendances = normalizeAttendances(child.attendances);
   }
 
   if(child.birth_date) {
@@ -62,4 +59,13 @@ var normalizeChild = (child) => {
 
   return toReturn;
 };
+
+var normalizeAttendances = (attendances) => {
+  var grouped = _.groupBy(
+    attendances.map(att => { return { day:  att.split('/')[0], shiftId: att.split('/')[1] } }),
+    att => att.day
+  );
+
+  return _.values(_.mapObject(grouped, (value, key) => { return { day: key, shifts: _.map(value, x => x.shiftId) } }));
+}
 

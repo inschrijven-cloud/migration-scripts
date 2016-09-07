@@ -14,5 +14,5 @@ SELECT array_to_json(array_agg(row_to_json(t))) FROM (
 ) t
 "
 
-psql -d $DB_NAME -U postgres -W -h localhost --command="$QUERY" --no-align --tuples-only
+psql -d $DB_NAME -U postgres -W -h 127.0.0.1 --command="$QUERY" --no-align --tuples-only
 
