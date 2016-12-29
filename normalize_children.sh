@@ -26,7 +26,6 @@ var normalizeChild = (child) => {
 
   toReturn.doc.firstName = child.first_name;
   toReturn.doc.lastName = child.last_name;
-  toReturn.doc.attendances = [];
 
   toReturn.doc.contact = {};
   toReturn.doc.contact.phone = [];
@@ -47,10 +46,6 @@ var normalizeChild = (child) => {
   if(child.street_number) toReturn.doc.address.number = child.street_number;
   if(child.zip_code) toReturn.doc.address.zipCode = Number(child.zip_code);
   if(child.city) toReturn.doc.address.city = child.city;
- 
-  if(child.attendances) {
-    toReturn.doc.attendances = normalizeAttendances(child.attendances);
-  }
 
   if(child.birth_date) {
     const splitDate = child.birth_date.split("-");
@@ -59,13 +54,4 @@ var normalizeChild = (child) => {
 
   return toReturn;
 };
-
-var normalizeAttendances = (attendances) => {
-  var grouped = _.groupBy(
-    attendances.map(att => { return { day:  att.split('/')[0], shiftId: att.split('/')[1] } }),
-    att => att.day
-  );
-
-  return _.values(_.mapObject(grouped, (value, key) => { return { day: key, shifts: _.map(value, x => x.shiftId) } }));
-}
 

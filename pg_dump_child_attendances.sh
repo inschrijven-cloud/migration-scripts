@@ -5,8 +5,8 @@
 QUERY="
 SELECT array_to_json(array_agg(row_to_json(t)))
 FROM (
-  SELECT child.*
-  FROM child
+  SELECT *
+  FROM child_to_shift
 ) t
 "
 
