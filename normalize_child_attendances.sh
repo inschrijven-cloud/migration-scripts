@@ -21,9 +21,11 @@ var normalizeChildAttendance = (att) => {
   var toReturn = {
     doc: {},
     kind: 'type/childAttendance/v1',
-    _id: att.shift_id + '--' + att.child_id
+    _id: att.date + '--' + att.shift_id + '--' + att.child_id
   };
 
   return toReturn;
 };
+
+
 
