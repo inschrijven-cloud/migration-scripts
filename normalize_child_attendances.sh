@@ -12,20 +12,28 @@ process.stdin.on('readable', () => {
 });
 
 process.stdin.on('end', () => {
-  var parsed = JSON.parse(input);
-  var output = parsed.map(normalizeChildAttendance);
+  const parsed = JSON.parse(input);
+  const output = parsed.map(normalizeChildAttendance);
   process.stdout.write(JSON.stringify( { docs: output } ));
 });
 
-var normalizeChildAttendance = (att) => {
+const normalizeChildAttendance = (att) => {
   var toReturn = {
-    doc: {},
-    kind: 'type/childAttendance/v1',
+    doc: {
+      dayId: att.date,
+      dayDate: formatDate(att.date),
+      shiftId: att.shift_id,
+      childId: att.child_id
+    },
+    kind: 'type/childattendance/v1',
     _id: att.date + '--' + att.shift_id + '--' + att.child_id
   };
 
   return toReturn;
 };
 
-
+const formatDate = (date) => {
+  const splitDate = date.split("-");
+  return { year: Number(splitDate[0]), month: Number(splitDate[1]), day: Number(splitDate[2]) };
+}
 
