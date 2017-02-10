@@ -19,21 +19,11 @@ process.stdin.on('end', () => {
 
 const normalizeChildAttendance = (att) => {
   var toReturn = {
-    doc: {
-      dayId: att.date,
-      dayDate: formatDate(att.date),
-      shiftId: att.shift_id,
-      childId: att.child_id
-    },
+    doc: { },
     kind: 'type/childattendance/v1',
     _id: att.date + '--' + att.shift_id + '--' + att.child_id
   };
 
   return toReturn;
 };
-
-const formatDate = (date) => {
-  const splitDate = date.split("-");
-  return { year: Number(splitDate[0]), month: Number(splitDate[1]), day: Number(splitDate[2]) };
-}
 
