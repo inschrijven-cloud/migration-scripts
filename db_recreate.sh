@@ -19,6 +19,7 @@ curl -X PUT ${HOST}/${DB_CREW}
 curl -X PUT ${HOST}/${DB_CHILD_ATTENDANCE}
 
 ./pg_dump_children.sh | ./normalize_children.sh | curl -X POST ${HOST}/${DB_CHILDREN}/_bulk_docs -d @- -H 'Content-Type: application/json'
+./medical_files/normalize_medical_files.js --input medical_files/2016_Medische_fiche_De_Speelberg_Responses_-_Form_responses_1.csv | curl -X POST ${HOST}/${DB_CHILDREN}/_bulk_docs -d @- -H 'Content-Type: application/json'
 ./pg_dump_shifts.sh | ./normalize_shifts.sh | curl -X POST ${HOST}/${DB_DAYS}/_bulk_docs -d @- -H 'Content-Type: application/json'
 ./pg_dump_crew.sh | ./normalize_crew.sh | curl -X POST ${HOST}/${DB_CREW}/_bulk_docs -d @- -H 'Content-Type: application/json'
 ./pg_dump_child_attendances.sh | ./normalize_child_attendances.sh | curl -X POST ${HOST}/${DB_CHILD_ATTENDANCE}/_bulk_docs -d @- -H 'Content-Type: application/json'
