@@ -50,6 +50,14 @@ const normalizeChild = (child) => {
     }
   };
 
+  if(toReturn.doc.medicalInformation.allergies.allergies[0] == '') {
+    toReturn.doc.medicalInformation.allergies.allergies = [];
+  }
+
+  if(toReturn.doc.medicalInformation.conditions.conditions[0] == '') {
+    toReturn.doc.medicalInformation.conditions.conditions = [];
+  }
+
   if(child[5]) {
     toReturn.doc.legacyContact.phone = [ { kind: 'landline', phoneNumber: child[5] } ];
   }
